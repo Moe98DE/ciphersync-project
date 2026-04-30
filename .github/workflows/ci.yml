@@ -1,0 +1,31 @@
+name: CipherSync CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22'
+
+    - name: Install golangci-lint
+      run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.56.2
+
+    - name: Run Linter
+      run: $(go env GOPATH)/bin/golangci-lint run ./...
+
+    - name: Run Tests and Generate Memory Profile
+      run: go test -v -memprofile=mem.out ./...
+
+    - name: Enforce Memory Profiling Gate
+      run: go run scripts/check_memory.go mem.out

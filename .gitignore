@@ -1,0 +1,8 @@
+# Go workspace and environment
+.go-env/
+mem.out
+
+# Binaries
+ciphersync
+ciphersync.exe
+*.test
