@@ -24,8 +24,11 @@ jobs:
     - name: Run Linter
       run: $(go env GOPATH)/bin/golangci-lint run ./...
 
-    - name: Run Tests and Generate Memory Profile
-      run: go test -v -memprofile=mem.out ./...
+    - name: Run All Unit Tests
+      run: go test -v ./...
+
+    - name: Generate Memory Profile (Team Alpha Pipeline)
+      run: go test -v -memprofile=mem.out ./internal/engine
 
     - name: Enforce Memory Profiling Gate
       run: go run scripts/check_memory.go mem.out
