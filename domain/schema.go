@@ -13,9 +13,9 @@ type Column struct {
 // It maps exactly to what we need to safely toggle constraints (Milestone 3).
 type ForeignKey struct {
 	ConstraintName string
-	SourceColumn   string
+	SourceColumns  []string
 	TargetTable    string
-	TargetColumn   string
+	TargetColumns  []string
 }
 
 // Table represents a node in the DAG.
